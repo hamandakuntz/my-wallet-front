@@ -1,12 +1,14 @@
 import styled from "styled-components";
+import dayjs from "dayjs";
 
 export default function Transaction(props) {
-    const { date, description, value, type } = props.item;
+    const { date, description, value, type } = props.item;    
+    const newDate = dayjs(date).format('DD/MM'); 
 
     return (
         <Container type={type}>
             <Wrapper>
-                <Date>{date}</Date>
+                <Date>{newDate}</Date>
                 <Description>{description}</Description>
             </Wrapper> 
             <span className="value">{(value/100).toFixed(2).replace(".",",")}</span>

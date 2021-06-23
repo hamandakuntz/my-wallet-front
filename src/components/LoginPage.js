@@ -16,7 +16,7 @@ export default function LoginPage() {
     e.preventDefault();
    
     if (!(email && password)) {
-      alert("Favor, preencha todos os campos");
+      alert("Por favor, preencha todos os campos");
       return "";
     }
 

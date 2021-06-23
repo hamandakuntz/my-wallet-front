@@ -6,6 +6,8 @@ import RegisterPage from "./components/RegisterPage";
 import Dashboard from "./components/Dashboard";
 import "./components/styles/reset.css";
 import UserContext from "./contexts/UserContext";
+import NewEntry from "./components/NewEntry";
+import NewOutput from "./components/NewOutput";
 
 function App() {
 
@@ -15,7 +17,7 @@ function App() {
     <UserContext.Provider value={{ userData, setUserData }}>
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact>
+          <Route path="/" exact>
             <LoginPage />
           </Route>
           <Route path="/register" exact>
@@ -23,6 +25,12 @@ function App() {
           </Route>  
           <Route path="/dashboard" exact>      
             <Dashboard />
+          </Route>
+          <Route path="/newentry" exact>      
+            <NewEntry />
+          </Route>
+          <Route path="/newoutput" exact>      
+            <NewOutput />
           </Route>
         </Switch>
       </BrowserRouter>

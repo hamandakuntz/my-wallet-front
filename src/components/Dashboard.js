@@ -5,108 +5,92 @@ import UserContext from "../contexts/UserContext";
 import { IoLogOutOutline } from "react-icons/io5";
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import Transaction from "./Transaction";
+import { Link } from "react-router-dom";
+
 
 export default function Dashboard() {
-    const [transactions, setTransactions] = useState([
-        {
-            date: "30/11",
-            description: "Almoço mãe",
-            value: 3990,
-            type: "output",
-        },
-        {
-            date: "27/11",
-            description: "Mercado",
-            value: 54254,
-            type: "output",
-        },
-        {
-            date: "26/11",
-            description: "Compras churrasco",
-            value: 6760,
-            type: "output",
-        },
-        {
-            date: "20/11",
-            description: "Empréstimo Maria",
-            value: 50000,
-            type: "entry",
-        },
-        {
-            date: "15/11",
-            description: "Salário",
-            value: 300000,
-            type: "entry",
-        },
-    ]);    
-      
+    const [transactions, setTransactions] = useState([]);          
     const { userData } = useContext(UserContext);
     const localUser = JSON.parse(localStorage.getItem("user"));
     const [name, setName] = useState("");
-
-    let total = 0;
+    let totalAmount = 0;
    
     transactions.forEach(item => {
         if(item.type === "entry") {
-            total += item.value;
+            totalAmount += item.value;
         } else {
-            total -= item.value;
-        }
+            totalAmount -= item.value;
+        }        
     });
 
-    // useEffect(() => {
-    //     getTransactions()      
-    // }, []);
+  
+
+    useEffect(() => {
+        getTransactions()      
+    }, []);
+
+    
 
     function getTransactions() {
         const config = {
-            headers: { Authorization: `Bearer ${userData.token || localUser.token}` },
-          };
+            headers: { Authorization: `Bearer ${userData || localUser}` },
+        };
 
           const request = axios.get(
-            "https://localhost:4000/transactions",
+            `http://localhost:4000/transactions`,
             config
           );
           request.then((response) => {
-            setTransactions(response.data.transactions); 
-            setName(response.data.user.name);           
+              console.log(response.data)
+              setTransactions(response.data.transactions); 
+              setName(response.data.userName);               
           });
+
           request.catch(() => {
             alert("Houve uma falha ao obter suas transações, por favor, atualize a página.");
-        });
+        });        
     }
+
+    
 
     return (
        <Container>
            <Header>
-            <Title>{`Olá ${name}`}</Title>
-            <IoLogOutOutline className="logout-icon"/>
+            <Title>{`Olá, ${name}`}</Title>
+            <Link to="/"> 
+                <IoLogOutOutline className="logout-icon"/>
+            </Link>
            </Header>  
            <TransactionsRegisterCard transactions={transactions}>
                {transactions.length === 0 ? <div>Não há registros de entrada ou saída</div> :                
                transactions.map((t, i) => (
-                <Transaction                  
+                <Transaction  
+                  transactions={transactions}                
                   item={t}
                   key={i}
                 />               
                ))}
             {transactions.length === 0 ? "" : 
-                <Total total={total}>
+                <Total totalAmount={totalAmount}>
                     <h1>SALDO</h1>
-                    <span>{(total/100).toFixed(2).replace(".",",").replace("-","")}</span>
+                    <span>{(totalAmount/100).toFixed(2).replace(".",",").replace("-","")}</span>
                 </Total>
             }                  
            </TransactionsRegisterCard>     
            <Wrapper>  
                 <NewTransationCard>  
+                    <Link to="/newentry">
                     <AiOutlinePlusCircle className="plus-icon" />
-                   <h1>Nova</h1>
-                   <h2>entrada</h2>
+                    <h1>Nova</h1>
+                    <h2>entrada</h2>
+                    </Link>
                 </NewTransationCard>
                 <NewTransationCard> 
-                    <AiOutlineMinusCircle className="minus-icon" />                   
-                    <h1>Nova</h1>
-                    <h2>saída</h2>
+                    <Link to="/newoutput">
+                        <AiOutlineMinusCircle className="minus-icon" />                   
+                        <h1>Nova</h1>
+                        <h2>saída</h2>
+                    </Link>
                 </NewTransationCard>
            </Wrapper>  
        </Container>
