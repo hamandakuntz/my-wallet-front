@@ -4,99 +4,97 @@ import logo from "../images/MyWallet.png";
 import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 
-
 export default function RegisterPage() {
     let history = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [load, setLoad] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [name, setName] = useState("");
+    const [load, setLoad] = useState(false);
 
-  function subscribe(e) {
-    e.preventDefault();
-    if(password !== checkPassword) {
-        alert("As senhas não coincidem!")
-    }
+    function subscribe(e) {
+      e.preventDefault();
 
-    if (!(email && password && username && checkPassword)) {
-      alert("Favor, preencha todos os campos");
-      return "";
-    }
-
-    setLoad(true);
-
-    const body = {
-      email: email,
-      password: password,
-      username: username,      
-    };
-    const request = axios.post(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up",
-      body
-    );
-    request.then(() => {
-      history.push("/");
-      setLoad(false);
-    });
-
-    request.catch((error) => {
-      const statusCode = error.response.status;
-
-      if (statusCode === 403) {
-        alert("O email que você inseriu já está cadastrado. Tente novamente!");
-      } else {
-        alert(
-          "Ocorreu um erro ao realizar o seu cadastro. Verifique se a imagem inserida na picture url termina em alguma extensão de imagem (ex: .jpg, .png) e tente novamente!"
-        );
+      if(password !== confirmPassword) {
+        alert("As senhas não coincidem!");
+        setPassword("");
+        setConfirmPassword("");
       }
 
-      setLoad(false);
-    });
-  }
+      if (!(email && password && name && confirmPassword)) {
+        alert("Por favor, preencha todos os campos");
+        return "";
+      }
 
-    return (               
-        <Container>
-          <img src={logo} alt="logo" />         
-        <Form onSubmit={(e) => subscribe(e)}>
-            <input
-                disabled={load}
-                type="text"
-                placeholder="Nome"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-          <input
+      setLoad(true);
+
+      const body = {email, password, name, confirmPassword};
+
+      const request = axios.post("http://localhost:4000/register", body);
+
+      request.then(() => {
+        history.push("/login");
+        setLoad(false);
+      });
+
+      request.catch((error) => {
+        const statusCode = error.response.status;
+
+        if (statusCode === 403) {
+          alert("O email que você inseriu já está cadastrado. Tente novamente!");
+        } else if(statusCode === 400) {
+          alert(`Ocorreu um erro com as validações de nome (mínimo 3 caracteres), e-mail (o e-mail não é um e-mail válido), senha (mínimo 3 caracteres) ou confirmação de senha (não coincide com a senha digitada). Tente novamente!`)
+        } else {
+            alert(
+              "Ocorreu um erro ao realizar o seu cadastro. Tente novamente!"
+            );
+        }
+        setLoad(false);
+      });               
+    }
+  
+
+  return (               
+    <Container>
+      <img src={logo} alt="logo" />         
+    <Form onSubmit={(e) => subscribe(e)}>
+        <input
             disabled={load}
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            disabled={load}
-            type="password"
-            placeholder="Senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />         
-         <input
-            disabled={load}
-            type="password"
-            placeholder="Confirme a senha"
-            value={checkPassword}
-            onChange={(e) => setCheckPassword(e.target.value)}
-          />
-            <Button disabled={load} type="submit">
-                Cadastrar
-            </Button>
-            <Link to="/">
-                <Redirect>Já tem uma conta? Entre agora!</Redirect>
-            </Link>
-        </Form>
-        </Container>
-      
-    );
+            type="text"
+            placeholder="Nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+        />
+      <input
+        disabled={load}
+        type="email"
+        placeholder="E-mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        disabled={load}
+        type="password"
+        placeholder="Senha"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />         
+      <input
+        disabled={load}
+        type="password"
+        placeholder="Confirme a senha"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      />
+        <Button disabled={load} type="submit">
+          Cadastrar
+        </Button>
+        <Link to="/login">
+          <Redirect>Já tem uma conta? Entre agora!</Redirect>
+        </Link>
+    </Form>
+    </Container>      
+  );
 }
 
 
@@ -124,11 +122,17 @@ const Form = styled.form`
     border: none;
     margin-bottom: 15px;
     padding-left: 15px;
+    font-family: 'Raleway', sans-serif;
+    
+    :focus {
+      box-shadow: 0 0 1em white;
+      outline: 0;
+    }
 
     ::placeholder {
-        color: black;
-        font-family: 'Raleway', sans-serif;
-        font-size: 20px;
+      color: black;
+      font-family: 'Raleway', sans-serif;
+      font-size: 20px;
     }
   }
 `;
