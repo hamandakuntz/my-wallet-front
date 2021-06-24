@@ -57,7 +57,7 @@ export default function Dashboard() {
        <Container>
            <Header>
             <Title>{`Olá, ${name}`}</Title>
-            <Link to="/"> 
+            <Link to="/logout"> 
                 <IoLogOutOutline className="logout-icon"/>
             </Link>
            </Header>  

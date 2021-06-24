@@ -8,6 +8,7 @@ import "./components/styles/reset.css";
 import UserContext from "./contexts/UserContext";
 import NewEntry from "./components/NewEntry";
 import NewOutput from "./components/NewOutput";
+import Logout from "./components/Logout";
 
 function App() {
 
@@ -31,6 +32,9 @@ function App() {
           </Route>
           <Route path="/newoutput" exact>      
             <NewOutput />
+          </Route>
+          <Route path="/logout" exact>      
+            <Logout />
           </Route>
         </Switch>
       </BrowserRouter>

@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     setLoad(true);
 
-    const body = {email, password};
+    const body = { email, password };
 
     const request = axios.post("http://localhost:4000/login", body);
 
@@ -30,7 +30,7 @@ export default function LoginPage() {
       setLoad(false);    
       setUserData(resp.data);  
       localStorage.setItem("user", JSON.stringify(resp.data));
-      const person = JSON.parse(localStorage.getItem("user"));      
+      const localUser = JSON.parse(localStorage.getItem("user"));      
       setEmail("");
       setPassword("");
       history.push("/dashboard");

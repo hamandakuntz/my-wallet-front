@@ -1,21 +1,47 @@
 import styled from "styled-components";
 import { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import UserContext from "../contexts/UserContext";
+import { useHistory } from "react-router-dom";
 
 export default function NewOutput() {
-    const [amount, setAmount] = useState("");
-    const [description, setDescription] = useState("");
-    const [load, setLoad] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [load, setLoad] = useState(false);
+  const { userData } = useContext(UserContext);
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  let history = useHistory();
+     
+  function send(e) {
+      e.preventDefault();
 
-    function send(e) {
-        e.preventDefault();
+      if (!(description && amount)) {
+        alert("Por favor, preencha todos os campos");
+        return "";
+      }
+      
+      setLoad(true);
 
-        if (!(description && amount)) {
-            alert("Por favor, preencha todos os campos");
-            return "";
-        }
-        setLoad(true);
-        alert("oi");             
-    }
+      const body = { value: amount, description: description, type: "output"};
+
+      const config = {
+        headers: { Authorization: `Bearer ${userData || localUser}` },
+      };
+    
+      const request = axios.post(
+        `http://localhost:4000/newtransaction`, body, config
+      );
+
+      request.then((response) => {
+       alert("Sua nova saída foi cadastrada com sucesso!");
+       history.push("/dashboard");
+                                  
+      });
+
+      request.catch(() => {
+        alert("Houve uma falha ao inserir sua nova saída. Tente novamente.");
+      });              
+  }
 
     return (
         <Container>
