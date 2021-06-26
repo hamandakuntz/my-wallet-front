@@ -33,7 +33,7 @@ export default function RegisterPage() {
       const request = axios.post("http://localhost:4000/register", body);
 
       request.then(() => {
-        history.push("/login");
+        history.push("/");
         setLoad(false);
       });
 
@@ -89,7 +89,7 @@ export default function RegisterPage() {
         <Button disabled={load} type="submit">
           Cadastrar
         </Button>
-        <Link to="/login">
+        <Link to="/">
           <Redirect>Já tem uma conta? Entre agora!</Redirect>
         </Link>
     </Form>
@@ -106,6 +106,11 @@ const Container = styled.div`
     margin-top: 100px;
     margin-bottom: 35px;
     margin-left: 113px;
+
+    @media (max-width: 330px) {
+      margin-top: 70px;
+      margin-left: 90px;
+    }
   }
 `;
 
@@ -124,6 +129,10 @@ const Form = styled.form`
     padding-left: 15px;
     font-family: 'Raleway', sans-serif;
     
+    @media (max-width: 330px) {
+      width: 280px;      
+    }
+
     :focus {
       box-shadow: 0 0 1em white;
       outline: 0;
@@ -133,6 +142,10 @@ const Form = styled.form`
       color: black;
       font-family: 'Raleway', sans-serif;
       font-size: 20px;
+
+      @media (max-width: 330px) {
+        font-size: 16px;      
+      }
     }
   }
 `;

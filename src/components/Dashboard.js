@@ -62,9 +62,11 @@ export default function Dashboard() {
             </Link>
            </Header>  
            <TransactionsRegisterCard transactions={transactions}>
-               {transactions.length === 0 ? <div>Não há registros de entrada ou saída</div> :                
+           
+               {transactions.length === 0 ? <div className="text">Não há registros de entrada ou saída</div> :                
                transactions.map((t, i) => (
-                <Transaction  
+                <Transaction
+                  className={`${transactions.length - 1 === i ? "last" : ""}`}                    
                   transactions={transactions}                
                   item={t}
                   key={i}
@@ -126,8 +128,33 @@ const TransactionsRegisterCard = styled.div`
     border-radius: 5px;
     background: #fff;
     margin-top: 10px;  
-    padding: 10px;    
+    padding: 10px;  
+    overflow-y: scroll;    
+
+    @media (max-width: 330px) {
+        height: 350px; 
+    }
+
+    .text {
+       margin-top: 190px;
+       margin-right: 50px;
+       margin-left: 50px;
+       text-align: center;
+       color: #868686;
+       font-size: 20px;
+
+       @media (max-width: 330px) {
+        margin-top: 150px;
+        margin-right: 45px;
+        margin-left: 45px;
+        text-align: center;
+        color: #868686;
+        font-size: 18px;
+       }
+    } 
 `;
+   
+  
 
 const Wrapper = styled.div`
     display: flex;
@@ -142,6 +169,10 @@ const NewTransationCard = styled.div`
     background-color: #A328D6;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 330px) {
+        width: 130px;  
+    }
     
     .plus-icon, .minus-icon {
         color: white;
@@ -161,12 +192,19 @@ const NewTransationCard = styled.div`
 `;
 
 const Total = styled.div`
-    width: 100%;
+    width: 84%;   
     display: flex;
     justify-content: space-between;
     position: absolute;    
-    bottom: 170px;
-    padding-right: 60px;
+    bottom: 158px;    
+    background: white;
+    height: 30px;
+    align-items: center;
+
+    @media (max-width: 330px) {
+        bottom: 155px; 
+        border-radius: 5px;
+    }
 
     h1 {
         font-size: 17px;
@@ -175,6 +213,6 @@ const Total = styled.div`
     }
 
     span {
-        color: ${props => props.total < 0 ? "#C70000" : "#50AD0E"}
+        color: ${props => props.totalAmount < 0 ? "#C70000" : "#50AD0E"}
     }
 `;

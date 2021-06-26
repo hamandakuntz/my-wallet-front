@@ -9,7 +9,7 @@ export default function Logout() {
     const localUser = JSON.parse(localStorage.getItem("user"));
     
     const config = {
-        headers: { Authorization: `Bearer ${userData || localUser}` },
+      headers: { Authorization: `Bearer ${userData || localUser}` },
     };
 
     console.log(userData)
@@ -19,6 +19,7 @@ export default function Logout() {
 
     request.then((resp) => {     
       history.push("/");
+      localStorage.removeItem('user');
     });
 
     request.catch((error) => {

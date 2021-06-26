@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
+import CurrencyInput from 'react-currency-masked-input';
 
 export default function NewEntry() {
     const [amount, setAmount] = useState("");
@@ -11,18 +12,23 @@ export default function NewEntry() {
     const { userData } = useContext(UserContext);
     const localUser = JSON.parse(localStorage.getItem("user"));
     let history = useHistory();
-       
+        
+
     function send(e) {
         e.preventDefault();
+        
+        const formatedAmount = amount.replace(".", "");
 
         if (!(description && amount)) {
           alert("Por favor, preencha todos os campos");
           return "";
         }
         
+        console.log(formatedAmount);
+
         setLoad(true);
 
-        const body = { value: amount, description: description, type: "entry"};
+        const body = { value: formatedAmount, description: description, type: "entry"};
 
         const config = {
           headers: { Authorization: `Bearer ${userData || localUser}` },
@@ -40,26 +46,31 @@ export default function NewEntry() {
 
         request.catch(() => {
           alert("Houve uma falha ao inserir sua nova entrada. Tente novamente.");
-        });              
-    }
+        });     
+    }   
+  
 
     return (
         <Container>
             <Title>Nova entrada</Title>        
             <Form onSubmit={(e) => send(e)}>
-                <input
+                <CurrencyInput                                                                                                                     
                 disabled={load}
+                max="9999999.99"
+                maxLength="10"
                 type="number"
                 placeholder="Valor"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e,m) => setAmount(m)}
+                required
                 />
                 <input
                 disabled={load}
                 type="text"
                 placeholder="Descrição"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}                
+                onChange={(e) => setDescription(e.target.value)}  
+                required              
                 />
                 <Button disabled={load}  type="submit">
                     Salvar entrada
@@ -93,6 +104,10 @@ const Form = styled.form`
     padding-left: 15px;
     font-family: 'Raleway', sans-serif;
 
+    @media (max-width: 330px) {
+      width: 280px;
+    }
+
     :focus {
       box-shadow: 0 0 1em white;
       outline: 0;
@@ -102,6 +117,10 @@ const Form = styled.form`
       color: black;
       font-family: "Raleway", sans-serif;
       font-size: 20px;
+
+      @media (max-width: 330px) {
+        font-size: 16px;
+      }
     }
   }
 `;

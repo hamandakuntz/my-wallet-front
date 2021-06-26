@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import logo from "../images/MyWallet.png";
 import axios from "axios";
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [load, setLoad] = useState(false);
   let history = useHistory();
-  const { userData, setUserData } = useContext(UserContext);
+  const { setUserData } = useContext(UserContext);
 
   function login(e) {
     e.preventDefault();
@@ -30,7 +30,6 @@ export default function LoginPage() {
       setLoad(false);    
       setUserData(resp.data);  
       localStorage.setItem("user", JSON.stringify(resp.data));
-      const localUser = JSON.parse(localStorage.getItem("user"));      
       setEmail("");
       setPassword("");
       history.push("/dashboard");
@@ -79,6 +78,11 @@ const Container = styled.div`
     margin-top: 150px;
     margin-bottom: 35px;
     margin-left: 113px;
+    
+    @media (max-width: 330px) {
+      margin-top: 130px;
+      margin-left: 90px;
+    }
   }
 `;
 
@@ -97,6 +101,10 @@ const Form = styled.form`
     padding-left: 15px;
     font-family: 'Raleway', sans-serif;
 
+    @media (max-width: 330px) {
+      width: 280px;
+    }
+
     :focus {
       box-shadow: 0 0 1em white;
       outline: 0;
@@ -106,6 +114,10 @@ const Form = styled.form`
       color: black;
       font-family: "Raleway", sans-serif;
       font-size: 20px;
+      
+      @media (max-width: 330px) {
+        font-size: 16px;      
+      }
     }
   }
 `;

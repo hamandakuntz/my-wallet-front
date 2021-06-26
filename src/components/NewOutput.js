@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
+import CurrencyInput from 'react-currency-masked-input';
+
 
 export default function NewOutput() {
   const [amount, setAmount] = useState("");
@@ -15,14 +17,16 @@ export default function NewOutput() {
   function send(e) {
       e.preventDefault();
 
-      if (!(description && amount)) {
+      const formatedAmount = amount.replace(".", "");
+
+      if (!(description && formatedAmount)) {
         alert("Por favor, preencha todos os campos");
         return "";
-      }
+      }     
       
       setLoad(true);
 
-      const body = { value: amount, description: description, type: "output"};
+      const body = { value: formatedAmount, description: description, type: "output"};
 
       const config = {
         headers: { Authorization: `Bearer ${userData || localUser}` },
@@ -47,19 +51,23 @@ export default function NewOutput() {
         <Container>
             <Title>Nova saída</Title>        
             <Form onSubmit={(e) => send(e)}>
-                <input
+                <CurrencyInput
+                max="9999999.99"
+                maxLength="10"
                 disabled={load}
                 type="number"
                 placeholder="Valor"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e,m) => setAmount(m)}
+                required
                 />
                 <input
                 disabled={load}
                 type="text"
                 placeholder="Descrição"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}                
+                onChange={(e) => setDescription(e.target.value)} 
+                required               
                 />
                 <Button disabled={load}  type="submit">
                     Salvar saída
@@ -93,6 +101,10 @@ const Form = styled.form`
     padding-left: 15px;
     font-family: 'Raleway', sans-serif;
 
+    @media (max-width: 330px) {
+    width: 280px;
+    }
+
     :focus {
       box-shadow: 0 0 1em white;
       outline: 0;
@@ -102,8 +114,14 @@ const Form = styled.form`
       color: black;
       font-family: "Raleway", sans-serif;
       font-size: 20px;
+
+      @media (max-width: 330px) {
+        font-size: 16px;
+      }
     }
   }
+
+  
 `;
 
 const Title = styled.div`  

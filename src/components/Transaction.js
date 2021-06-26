@@ -4,9 +4,10 @@ import dayjs from "dayjs";
 export default function Transaction(props) {
     const { date, description, value, type } = props.item;    
     const newDate = dayjs(date).format('DD/MM'); 
-
+    const last = props.className;
+    
     return (
-        <Container type={type}>
+        <Container type={type} className={last}>
             <Wrapper>
                 <Date>{newDate}</Date>
                 <Description>{description}</Description>
@@ -23,15 +24,18 @@ const Container = styled.div`
     font-size: 16px;
     padding-top: 20px;    
     align-items: center;
+    padding-bottom: ${props => props.className === "last" ? "50px" : ""};
 
     .value {
         color: ${props => props.type === "output" ? "#C70000" : "#03AC00"};        
-    }
+    } 
+    
 `;
 
 const Wrapper = styled.div`
     display: flex;
-    align-items: flex-end;      
+    align-items: flex-end;  
+    overflow: hidden;    
 `;
 
 const Date = styled.div`
@@ -41,7 +45,7 @@ const Date = styled.div`
 `;
 
 
-const Description = styled.div`  
+const Description = styled.div`      
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -49,4 +53,8 @@ const Description = styled.div`
     letter-spacing: 0em;
     text-align: left;
     color: black;
+    margin-right: 40px;
+    white-space: nowrap;  
+    overflow: hidden;   
+    text-overflow: ellipsis;   
 `;
