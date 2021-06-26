@@ -10,10 +10,7 @@ export default function Logout() {
     
     const config = {
       headers: { Authorization: `Bearer ${userData || localUser}` },
-    };
-
-    console.log(userData)
-    console.log(localUser)
+    };    
 
     const request = axios.post("http://localhost:4000/logout", {}, config);
 

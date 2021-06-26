@@ -40,8 +40,7 @@ export default function Dashboard() {
             `http://localhost:4000/transactions`,
             config
           );
-          request.then((response) => {
-              console.log(response.data)
+          request.then((response) => {              
               setTransactions(response.data.transactions); 
               setName(response.data.userName);               
           });

@@ -22,9 +22,7 @@ export default function NewEntry() {
         if (!(description && amount)) {
           alert("Por favor, preencha todos os campos");
           return "";
-        }
-        
-        console.log(formatedAmount);
+        }     
 
         setLoad(true);
 
