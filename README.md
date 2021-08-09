@@ -1,4 +1,4 @@
-# My Wallet <img style='size: 5px;' src='https://user-images.githubusercontent.com/77818350/128784460-9f8af031-2cf4-4f3a-a59e-98b77c9939c1.png'>
+# My Wallet <img style='width: 20px;' 'height:20px;' src='https://user-images.githubusercontent.com/77818350/128784460-9f8af031-2cf4-4f3a-a59e-98b77c9939c1.png'>
 
 An easy to use financial manager. Track your revenues and expenses to learn how you spend your money and know all the time how much you have.
 
