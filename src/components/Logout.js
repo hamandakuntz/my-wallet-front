@@ -1,30 +1,32 @@
-import axios from 'axios';
-import { useContext, useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
+import axios from "axios";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 
 export default function Logout() {
-    let history = useHistory();
-    const { userData } = useContext(UserContext);
-    const localUser = JSON.parse(localStorage.getItem("user"));
-    
-    const config = {
-      headers: { Authorization: `Bearer ${userData || localUser}` },
-    };    
+  let history = useHistory();
+  const { userData } = useContext(UserContext);
+  const localUser = JSON.parse(localStorage.getItem("user"));
 
-    const request = axios.post("http://localhost:4000/logout", {}, config);
+  const config = {
+    headers: { Authorization: `Bearer ${userData || localUser}` },
+  };
 
-    request.then((resp) => {     
-      history.push("/");
-      localStorage.removeItem('user');
-    });
+  const request = axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/logout`,
+    {},
+    config
+  );
 
-    request.catch((error) => {
-      alert("Falha ao deslogar. Tente novamente");   
-      history.push("/dashboard");  
-    });
+  request.then((resp) => {
+    history.push("/");
+    localStorage.removeItem("user");
+  });
 
-    return (
-        ""
-    )   
+  request.catch((error) => {
+    alert("Falha ao deslogar. Tente novamente");
+    history.push("/dashboard");
+  });
+
+  return "";
 }

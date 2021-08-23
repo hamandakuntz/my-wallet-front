@@ -1,89 +1,91 @@
 import styled from "styled-components";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
-import CurrencyInput from 'react-currency-masked-input';
+import CurrencyInput from "react-currency-masked-input";
 
 export default function NewEntry() {
-    const [amount, setAmount] = useState("");
-    const [description, setDescription] = useState("");
-    const [load, setLoad] = useState(false);
-    const { userData } = useContext(UserContext);
-    const localUser = JSON.parse(localStorage.getItem("user"));
-    let history = useHistory();
-        
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [load, setLoad] = useState(false);
+  const { userData } = useContext(UserContext);
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  let history = useHistory();
 
-    function send(e) {
-        e.preventDefault();
-        
-        const formatedAmount = amount.replace(".", "");
+  function send(e) {
+    e.preventDefault();
 
-        if (!(description && amount)) {
-          alert("Por favor, preencha todos os campos");
-          return "";
-        }     
+    const formatedAmount = amount.replace(".", "");
 
-        setLoad(true);
+    if (!(description && amount)) {
+      alert("Por favor, preencha todos os campos");
+      return "";
+    }
 
-        const body = { value: formatedAmount, description: description, type: "entry"};
+    setLoad(true);
 
-        const config = {
-          headers: { Authorization: `Bearer ${userData || localUser}` },
-        };
-      
-        const request = axios.post(
-          `http://localhost:4000/newtransaction`, body, config
-        );
+    const body = {
+      value: formatedAmount,
+      description: description,
+      type: "entry",
+    };
 
-        request.then((response) => {
-         alert("Sua nova entrada foi cadastrada com sucesso!");
-         history.push("/dashboard");
-                                    
-        });
+    const config = {
+      headers: { Authorization: `Bearer ${userData || localUser}` },
+    };
 
-        request.catch(() => {
-          alert("Houve uma falha ao inserir sua nova entrada. Tente novamente.");
-        });     
-    }   
-  
+    const request = axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/newtransaction`,
+      body,
+      config
+    );
 
-    return (
-        <Container>
-            <Title>Nova entrada</Title>        
-            <Form onSubmit={(e) => send(e)}>
-                <CurrencyInput                                                                                                                     
-                disabled={load}
-                max="9999999.99"
-                maxLength="10"
-                type="number"
-                placeholder="Valor"
-                value={amount}
-                onChange={(e,m) => setAmount(m)}
-                required
-                />
-                <input
-                disabled={load}
-                type="text"
-                placeholder="Descrição"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}  
-                required              
-                />
-                <Button disabled={load}  type="submit">
-                    Salvar entrada
-                </Button>
-            </Form>
-            
-        </Container>
-    )
+    request.then((response) => {
+      alert("Sua nova entrada foi cadastrada com sucesso!");
+      history.push("/dashboard");
+    });
+
+    request.catch(() => {
+      alert("Houve uma falha ao inserir sua nova entrada. Tente novamente.");
+    });
+  }
+
+  return (
+    <Container>
+      <Title>Nova entrada</Title>
+      <Form onSubmit={(e) => send(e)}>
+        <CurrencyInput
+          disabled={load}
+          max="9999999.99"
+          maxLength="10"
+          type="number"
+          placeholder="Valor"
+          value={amount}
+          onChange={(e, m) => setAmount(m)}
+          required
+        />
+        <input
+          disabled={load}
+          type="text"
+          placeholder="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+        <Button disabled={load} type="submit">
+          Salvar entrada
+        </Button>
+      </Form>
+    </Container>
+  );
 }
 
 const Container = styled.div`
   font-family: "Raleway";
   background: #8c21be;
   height: 100vh;
-  padding: 20px;  
+  padding: 20px;
   padding-top: 50px;
 `;
 
@@ -100,7 +102,7 @@ const Form = styled.form`
     border: none;
     margin-bottom: 15px;
     padding-left: 15px;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 
     @media (max-width: 330px) {
       width: 280px;
@@ -123,9 +125,9 @@ const Form = styled.form`
   }
 `;
 
-const Title = styled.div`  
-  font-weight: 700;    
-  font-size: 26px;  
+const Title = styled.div`
+  font-weight: 700;
+  font-size: 26px;
   color: white;
   padding-bottom: 50px;
 `;

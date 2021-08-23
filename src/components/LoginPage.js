@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   function login(e) {
     e.preventDefault();
-   
+
     if (!(email && password)) {
       alert("Por favor, preencha todos os campos");
       return "";
@@ -24,11 +24,14 @@ export default function LoginPage() {
 
     const body = { email, password };
 
-    const request = axios.post("http://localhost:4000/login", body);
+    const request = axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/login`,
+      body
+    );
 
     request.then((resp) => {
-      setLoad(false);    
-      setUserData(resp.data);  
+      setLoad(false);
+      setUserData(resp.data);
       localStorage.setItem("user", JSON.stringify(resp.data));
       setEmail("");
       setPassword("");
@@ -78,7 +81,7 @@ const Container = styled.div`
     margin-top: 150px;
     margin-bottom: 35px;
     margin-left: 113px;
-    
+
     @media (max-width: 330px) {
       margin-top: 130px;
       margin-left: 90px;
@@ -99,7 +102,7 @@ const Form = styled.form`
     border: none;
     margin-bottom: 15px;
     padding-left: 15px;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 
     @media (max-width: 330px) {
       width: 280px;
@@ -114,9 +117,9 @@ const Form = styled.form`
       color: black;
       font-family: "Raleway", sans-serif;
       font-size: 20px;
-      
+
       @media (max-width: 330px) {
-        font-size: 16px;      
+        font-size: 16px;
       }
     }
   }

@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
-import CurrencyInput from 'react-currency-masked-input';
-
+import CurrencyInput from "react-currency-masked-input";
 
 export default function NewOutput() {
   const [amount, setAmount] = useState("");
@@ -13,76 +12,80 @@ export default function NewOutput() {
   const { userData } = useContext(UserContext);
   const localUser = JSON.parse(localStorage.getItem("user"));
   let history = useHistory();
-     
+
   function send(e) {
-      e.preventDefault();
+    e.preventDefault();
 
-      const formatedAmount = amount.replace(".", "");
+    const formatedAmount = amount.replace(".", "");
 
-      if (!(description && formatedAmount)) {
-        alert("Por favor, preencha todos os campos");
-        return "";
-      }     
-      
-      setLoad(true);
+    if (!(description && formatedAmount)) {
+      alert("Por favor, preencha todos os campos");
+      return "";
+    }
 
-      const body = { value: formatedAmount, description: description, type: "output"};
+    setLoad(true);
 
-      const config = {
-        headers: { Authorization: `Bearer ${userData || localUser}` },
-      };
-    
-      const request = axios.post(
-        `http://localhost:4000/newtransaction`, body, config
-      );
+    const body = {
+      value: formatedAmount,
+      description: description,
+      type: "output",
+    };
 
-      request.then((response) => {
-       alert("Sua nova saída foi cadastrada com sucesso!");
-       history.push("/dashboard");
-                                  
-      });
+    const config = {
+      headers: { Authorization: `Bearer ${userData || localUser}` },
+    };
 
-      request.catch(() => {
-        alert("Houve uma falha ao inserir sua nova saída. Tente novamente.");
-      });              
+    const request = axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/newtransaction`,
+      body,
+      config
+    );
+
+    request.then((response) => {
+      alert("Sua nova saída foi cadastrada com sucesso!");
+      history.push("/dashboard");
+    });
+
+    request.catch(() => {
+      alert("Houve uma falha ao inserir sua nova saída. Tente novamente.");
+    });
   }
 
-    return (
-        <Container>
-            <Title>Nova saída</Title>        
-            <Form onSubmit={(e) => send(e)}>
-                <CurrencyInput
-                max="9999999.99"
-                maxLength="10"
-                disabled={load}
-                type="number"
-                placeholder="Valor"
-                value={amount}
-                onChange={(e,m) => setAmount(m)}
-                required
-                />
-                <input
-                disabled={load}
-                type="text"
-                placeholder="Descrição"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)} 
-                required               
-                />
-                <Button disabled={load}  type="submit">
-                    Salvar saída
-                </Button>
-            </Form>
-            
-        </Container>
-    )
+  return (
+    <Container>
+      <Title>Nova saída</Title>
+      <Form onSubmit={(e) => send(e)}>
+        <CurrencyInput
+          max="9999999.99"
+          maxLength="10"
+          disabled={load}
+          type="number"
+          placeholder="Valor"
+          value={amount}
+          onChange={(e, m) => setAmount(m)}
+          required
+        />
+        <input
+          disabled={load}
+          type="text"
+          placeholder="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+        <Button disabled={load} type="submit">
+          Salvar saída
+        </Button>
+      </Form>
+    </Container>
+  );
 }
 
 const Container = styled.div`
   font-family: "Raleway";
   background: #8c21be;
   height: 100vh;
-  padding: 20px;  
+  padding: 20px;
   padding-top: 50px;
 `;
 
@@ -99,10 +102,10 @@ const Form = styled.form`
     border: none;
     margin-bottom: 15px;
     padding-left: 15px;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 
     @media (max-width: 330px) {
-    width: 280px;
+      width: 280px;
     }
 
     :focus {
@@ -120,13 +123,11 @@ const Form = styled.form`
       }
     }
   }
-
-  
 `;
 
-const Title = styled.div`  
-  font-weight: 700;    
-  font-size: 26px;  
+const Title = styled.div`
+  font-weight: 700;
+  font-size: 26px;
   color: white;
   padding-bottom: 50px;
 `;
