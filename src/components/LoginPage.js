@@ -25,7 +25,7 @@ export default function LoginPage() {
     const body = { email, password };
 
     const request = axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}/login`,
+      `https://pacific-castle-27372.herokuapp.com/${process.env.REACT_APP_API_BASE_URL}/login`,
       body
     );
 
