@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     getTransactions();
-  }, []);
+  });
 
   transactions.forEach((item) => {
     if (item.type === "entry") {
