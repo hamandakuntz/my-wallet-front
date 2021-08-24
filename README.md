@@ -18,7 +18,7 @@ This is a demo of the application running:
 
 ![mywallet](https://user-images.githubusercontent.com/77818350/130640046-68a1c93c-ec77-4991-91e9-33a7d6842975.gif)
 
-You also can test this app here: https://my-wallet-front-rouge.vercel.app/
+You also can test this app here: https://my-wallet-front-hamandakuntz.vercel.app/
 
 
 ## Technologies
