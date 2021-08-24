@@ -14,6 +14,13 @@ This is an web application with which lots of people can manage their own expens
 
 By using this app any user can learn how they've been using their money and always keep track of your balance.
 
+This is a demo of the application running: 
+
+![mywallet](https://user-images.githubusercontent.com/77818350/130640046-68a1c93c-ec77-4991-91e9-33a7d6842975.gif)
+
+You also can test this app here: https://my-wallet-front-rouge.vercel.app/
+
+
 ## Technologies
 The following tools and frameworks were used in the construction of the project:<br>
 <p>
@@ -22,6 +29,11 @@ The following tools and frameworks were used in the construction of the project:
   <img style='margin: 5px;' src="https://img.shields.io/badge/react-app%20-%2320232a.svg?&style=for-the-badge&color=60ddf9&logo=react&logoColor=%2361DAFB"/>
   <img style='margin: 5px;' src="https://img.shields.io/badge/react_route%20-%2320232a.svg?&style=for-the-badge&logo=react&logoColor=%2361DAFB"/>
 </p>
+
+## New feats to add soon:
+
+- Delete an expense/revenue
+- Refactor the code to use the concept of layered architecture
 
 ## How to run
 
