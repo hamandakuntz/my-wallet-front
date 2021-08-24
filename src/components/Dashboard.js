@@ -204,7 +204,6 @@ const Total = styled.div`
   background: white; 
 
   @media (max-width: 330px) {
-    bottom: 155px;
     border-radius: 5px;
   }
 
