@@ -128,6 +128,7 @@ const Title = styled.div`
 
 const TransactionsRegisterCard = styled.div`
   height: 446px;
+  position: relative;
   border-radius: 5px;
   background: #fff;
   margin-top: 10px;
@@ -195,14 +196,12 @@ const NewTransationCard = styled.div`
 `;
 
 const Total = styled.div`
-  width: 84%;
+  width: 94%;
   display: flex;
   justify-content: space-between;
   position: absolute;
-  bottom: 158px;
-  background: white;
-  height: 30px;
-  align-items: center;
+  bottom: 7px;
+  background: white; 
 
   @media (max-width: 330px) {
     bottom: 155px;
